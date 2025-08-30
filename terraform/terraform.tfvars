@@ -1,0 +1,16 @@
+# Project ID
+project_id = "product-reliability-analyzer"
+
+# GCP Region and Zone
+region = "us"
+zone   = "us-central1-a"
+
+# Storage Configuration
+raw_bucket_name     = "data_lake_credix"
+archive_bucket_name = "data_lake_credix-archive"
+
+# BigQuery Datasets
+bronze_dataset_id = "business_case_bronze"
+silver_dataset_id = "business_case_silver"
+gold_dataset_id   = "business_case_gold"
+temp_dataset_id   = "business_case_temp"

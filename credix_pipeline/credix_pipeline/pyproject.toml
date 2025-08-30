@@ -1,0 +1,38 @@
+[project]
+name = "credix-pipeline"
+version = "0.1.0"
+description = "Credix data pipeline with Dagster"
+readme = "README.md"
+requires-python = ">=3.9,<3.14"
+dependencies = [
+    "dagster",
+    "dagster-webserver",
+    "dagster-postgres", 
+    "dagster-gcp",
+    "pandas",
+    "pyarrow",
+    "sqlalchemy",
+    "psycopg2-binary",
+    "python-dotenv",
+    "google-cloud-storage",
+    "google-cloud-bigquery"
+]
+
+[project.optional-dependencies]
+dev = [
+    "dagster-webserver",
+    "pytest",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.dagster]
+module_name = "credix_pipeline.definitions"
+code_location_name = "credix_pipeline"
+
+[tool.setuptools.packages.find]
+#where = ["."]
+#include = ["credix_pipeline*"]
+exclude = ["credix_pipeline_tests"]

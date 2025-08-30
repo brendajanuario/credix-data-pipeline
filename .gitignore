@@ -1,0 +1,48 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# dbt
+dbt_project/logs/
+dbt_project/target/
+dbt_project/dbt_packages/
+
+# Dagster
+orchestration/.dagster/
+orchestration/dagster_home/
+*.tmp_dagster*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data files (keep structure but not actual data)
+*.parquet
+*.csv
+*.xlsx
+!data/README.md
+.github/instructions
+
+# Logs
+*.log
+logs/
+
+# Credentials
+*.json
+!terraform/variables.tf.example

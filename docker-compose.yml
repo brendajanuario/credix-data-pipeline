@@ -1,0 +1,89 @@
+services:
+  postgres:
+    image: postgres:14
+    container_name: credix_postgres
+    environment:
+      POSTGRES_DB: credix_transactions
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - credix_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Data loader service - runs once to load parquet data
+  data_loader:
+    build:
+      context: ./docker/data-loader
+      dockerfile: Dockerfile
+    container_name: credix_data_loader
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: credix_transactions
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    volumes:
+      - ./data:/app/data:ro
+    networks:
+      - credix_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+    profiles:
+      - data-loader
+
+  # dbt service for data transformations
+  dbt:
+    build:
+      context: ./docker/dbt
+      dockerfile: Dockerfile
+    container_name: credix_dbt
+    environment:
+      DBT_PROFILES_DIR: /app/profiles
+      DBT_PROJECT_DIR: /app/credix_analytics
+    volumes:
+      - ./dbt/credix_analytics:/app/credix_analytics
+      - ./dbt/profiles.yml:/app/profiles/profiles.yml:ro
+      - ./secrets:/app/secrets:ro
+    networks:
+      - credix_network
+    restart: "no"
+    profiles:
+      - dbt
+
+  # Dagster orchestration service
+  dagster:
+    build:
+      context: ./docker/dagster
+      dockerfile: Dockerfile
+    container_name: credix_dagster
+    environment:
+      DAGSTER_HOME: /app/dagster_home
+      PYTHONPATH: /app
+    volumes:
+      - ./dagster/credix_pipeline:/app/credix_pipeline
+      - ./secrets:/app/secrets:ro
+    ports:
+      - "3000:3000"
+    networks:
+      - credix_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+    profiles:
+      - dagster
+
+volumes:
+  postgres_data:
