@@ -13,5 +13,7 @@ __all__ = [
     "installments_raw_data",
     "installments_gcs_parquet",
     "installments_temp_table",
+    "dbt_bronze_installments",
+    "dbt_silver_installments_clean",
     "installments_cdc_checkpoint",
 ]

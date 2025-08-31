@@ -176,6 +176,18 @@ resource "google_bigquery_table" "business_case_installments" {
       type = "STRING"
       mode = "NULLABLE"
       description = "Buyer main tax ID"
+    },
+    {
+      name = "created_at"
+      type = "TIMESTAMP"
+      mode = "NULLABLE"
+      description = "Record creation timestamp"
+    },
+    {
+      name = "updated_at"
+      type = "TIMESTAMP"
+      mode = "NULLABLE"
+      description = "Record update timestamp"
     }
   ])
 

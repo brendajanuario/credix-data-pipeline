@@ -1,11 +1,17 @@
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
-from dagster import asset, AssetExecutionContext
+from dagster import asset, AssetExecutionContext, AssetKey
+from dagster_dbt import DbtProject, dbt_assets, DbtCliResource
 from ..resources import PostgresResource, GCPResource
 from ..utils.cdc_helpers import get_cdc_last_processed_time, build_cdc_query, process_cdc_results
 from ..utils.data_processing import prepare_dataframe_for_bigquery, dataframe_to_parquet_bytes, filter_schema_columns
 from ..utils.gcs_operations import generate_gcs_path, generate_no_changes_path, parse_gcs_uri, generate_archive_fail_paths, generate_unique_table_name
+from dagster_dbt import DbtProject, dbt_assets, DbtCliResource
+from dagster import AssetKey
+
+DBT_PROJECT_DIR = "/Users/jemzin/Github/credix-data-pipeline/dbt/business_case"
+dbt_project = DbtProject(project_dir=DBT_PROJECT_DIR)
 
 @asset(
     group_name="installments_pipeline",
@@ -166,3 +172,46 @@ def installments_cdc_checkpoint(
         })
     
     return "checkpoint_complete"
+
+@dbt_assets(
+    manifest=dbt_project.manifest_path,
+    select="installments",
+    name="installments_bronze_layer"
+)
+def dbt_bronze_installments(context: AssetExecutionContext, dbt: DbtCliResource):
+    """dbt bronze layer for installments data."""
+    
+    # Get the latest materialization of installments_temp_table to extract table name
+    try:
+        # Use the instance to get the latest materialization event
+        latest_materialization = context.instance.get_latest_materialization_event(
+            AssetKey(["installments_temp_table"])
+        )
+        if latest_materialization and latest_materialization.asset_materialization.metadata:
+            temp_table_name = latest_materialization.asset_materialization.metadata.get("temp_table_name", "installments")
+            if hasattr(temp_table_name, 'value'):
+                temp_table_name = temp_table_name.value
+        else:
+            temp_table_name = "installments"
+    except Exception as e:
+        # Fallback to default if no materialization found
+        context.log.warning(f"Could not retrieve temp table name from upstream asset: {e}")
+        temp_table_name = "installments"
+    
+    context.log.info(f"Using temp table name: {temp_table_name}")
+    
+    # Pass table name as dbt variable
+    yield from dbt.cli([
+        "build", 
+        "--select", "installments",
+        "--vars", f"installments_temp_table_name: {temp_table_name}"
+    ], context=context).stream()
+
+@dbt_assets(
+    manifest=dbt_project.manifest_path,
+    select="installments_clean",
+    name="installments_silver_layer"
+)
+def dbt_silver_installments_clean(context: AssetExecutionContext, dbt: DbtCliResource):
+    """dbt silver layer for installments data."""
+    yield from dbt.cli(["build", "--select", "installments_clean"], context=context).stream()
