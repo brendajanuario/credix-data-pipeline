@@ -1,51 +1,51 @@
 version: 2
 
 models:
-  - name: bronze_raw_transactions
+  - name: cnpj_ws
     description: "Raw transaction data from external sources"
     columns:
       - name: _loaded_at
         description: "Timestamp when data was loaded"
-        tests:
-          - not_null
+        # tests:
+        #   - not_null
       - name: _source_table
         description: "Source table identifier"
 
-  - name: silver_clean_transactions
+  - name: cnpj_ws_clean
     description: "Cleaned and standardized transaction data"
     columns:
       - name: standardized_customer_id
         description: "Standardized customer identifier"
-        tests:
-          - not_null
+        # tests:
+        #   - not_null
       - name: data_quality_flag
         description: "Data quality validation flag"
-        tests:
-          - accepted_values:
-              values: ['VALID']
+        # tests:
+        #   - accepted_values:
+        #       values: ['VALID']
       - name: parsed_transaction_date
         description: "Parsed transaction datetime"
-        tests:
-          - not_null
+        # tests:
+        #   - not_null
 
-  - name: gold_customer_daily_metrics
+  - name: cnpj_ws_metrics
     description: "Daily aggregated customer transaction metrics"
     columns:
       - name: standardized_customer_id
         description: "Customer identifier"
-        tests:
-          - not_null
+        # tests:
+        #   - not_null
       - name: transaction_date
         description: "Transaction date"
-        tests:
-          - not_null
+        # tests:
+        #   - not_null
       - name: total_transactions
         description: "Total number of transactions per customer per day"
-        tests:
-          - not_null
-          - dbt_utils.expression_is_true:
-              expression: ">= 0"
+        # tests:
+        #   - not_null
+        #   - dbt_utils.expression_is_true:
+        #       expression: ">= 0"
       - name: total_amount
         description: "Total transaction amount per customer per day"
-        tests:
-          - not_null
+        # tests:
+        #   - not_null

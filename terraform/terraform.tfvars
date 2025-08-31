@@ -7,7 +7,7 @@ zone   = "us-central1-a"
 
 # Storage Configuration
 raw_bucket_name     = "data_lake_credix"
-archive_bucket_name = "data_lake_credix-archive"
+archive_bucket_name = "data_lake_credix_archive"
 
 # BigQuery Datasets
 bronze_dataset_id = "business_case_bronze"

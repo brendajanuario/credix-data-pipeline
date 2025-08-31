@@ -2,7 +2,7 @@
 
 resource "google_bigquery_table" "business_case_cnpj_ws" {
   dataset_id = google_bigquery_dataset.bronze.dataset_id
-  table_id   = "business_case_cnpj_ws"
+  table_id   = "cnpj_ws"
   
   deletion_protection = false
 
@@ -96,6 +96,11 @@ resource "google_bigquery_table" "business_case_cnpj_ws" {
       type = "TIMESTAMP"
       mode = "NULLABLE"
       description = "Record update timestamp"
+    },
+    {name = "buyer_tax_id"
+      type = "STRING"
+      mode = "NULLABLE"
+      description = "Buyer tax ID"
     }
   ])
 
@@ -107,7 +112,7 @@ resource "google_bigquery_table" "business_case_cnpj_ws" {
 
 resource "google_bigquery_table" "business_case_installments" {
   dataset_id = google_bigquery_dataset.bronze.dataset_id
-  table_id   = "business_case_installments"
+  table_id   = "installments"
   
   deletion_protection = false
 
