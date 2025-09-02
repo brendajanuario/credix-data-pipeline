@@ -3,7 +3,7 @@
 A fully local, cost-friendly analytics pipeline that ingests data from PostgreSQL, lands CDC deltas in GCS as Parquet, enforces schema on load into a BigQuery temp layer, incrementally merges into Bronze with dbt, transforms in Silver and Gold, validates with dbt tests + Elementary, and publishes a static Elementary report.
 
 This README explains the whole process, how to run it locally, the resources provisioned via Terraform, and suggested next steps for production hardening.
-
+Check the Data Archicteture overview in [Data Architecture.md](https://github.com/brendajanuario/credix-data-pipeline/blob/main/Data%20Architecture.md)
 
 ## High-level architecture
 
@@ -237,7 +237,7 @@ Environment variables (examples)
 - Automated testing
   - Add Dagster unit tests for assets/utils; include dbt unit tests or macros tests; introduce integration tests that spin up ephemeral Postgres and mock GCS.
 - Scalability of ingestion
-  - This repo uses Dagster + Python extraction because it’s local and cost-efficient for relatively small datasets.
+  - **This repo uses Dagster + Python extraction because it’s local and cost-efficient for relatively small datasets.**
   - For higher volumes or multiple sources, keep Dagster as the orchestrator and plug in a managed/elastic ingestion tier:
     - Airbyte (managed/source connectors) for CDC into GCS/BQ
     - Dataflow or Datastream for streaming or large-scale CDC pipelines
