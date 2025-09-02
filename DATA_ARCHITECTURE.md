@@ -1,7 +1,6 @@
 
-1. [Complete Data Platform Architecture](https://github.com/brendajanuario/credix-data-pipeline/main/DATA_ARCHITECTURE.md#data-architecture-a-lambda-approach)
-2. [Case-Specific Solution (only PostgreSQL transactional replication)](https://github.com/brendajanuario/credix-data-pipeline/main/DATA_ARCHITECTURE.md#data-architecture-a-lambda-approach)
-
+1. [Complete Data Platform Architecture](https://github.com/brendajanuario/credix-data-pipeline/edit/main/DATA_ARCHITECTURE.md#data-architecture-a-lambda-approach)
+2. [Case-Specific Solution (only PostgreSQL transactional replication)](https://github.com/brendajanuario/credix-data-pipeline/edit/main/DATA_ARCHITECTURE.md#data-architecture-a-lambda-approach)
 
 ### **Data Architecture: A Lambda Approach**
 
