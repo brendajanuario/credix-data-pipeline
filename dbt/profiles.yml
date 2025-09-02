@@ -5,11 +5,11 @@ business_case:
       type: bigquery
       method: service-account
       project: product-reliability-analyzer
-      dataset: business_case  # This will be the default schema
+      dataset: business_case
       threads: 4
       timeout_seconds: 300
       location: us
-      keyfile: /Users/jemzin/Github/credix-data-pipeline/secrets/credix-pipeline-key.json
+      keyfile: /Users/jemzin/Github/credix-pipeline-key.json
       
     prod:
       type: bigquery
@@ -19,4 +19,4 @@ business_case:
       threads: 4
       timeout_seconds: 300
       location: us
-      keyfile: /Users/jemzin/Github/credix-data-pipeline/secrets/credix-pipeline-key.json
+      keyfile: /Users/jemzin/Github/credix-pipeline-key.json

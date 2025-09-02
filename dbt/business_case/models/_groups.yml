@@ -1,0 +1,5 @@
+groups:
+  - name: gold_layer
+    owner:
+      name: Finance Team
+      email: finance_team@example.com

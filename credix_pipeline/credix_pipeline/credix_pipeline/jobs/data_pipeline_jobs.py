@@ -18,5 +18,11 @@ installments_pipeline_job = define_asset_job(
 full_data_pipeline_job = define_asset_job(
     name="full_data_pipeline",
     description="Run both CNPJ and installments pipelines",
-    selection=AssetSelection.groups("cnpj_pipeline", "installments_pipeline"),
+    selection=AssetSelection.groups("cnpj_pipeline", "installments_pipeline", "gold_layer"),
+)
+
+monitoring_job = define_asset_job(
+    name="monitoring_job",
+    description="Run EDR monitoring and send reports",
+    selection=AssetSelection.groups("monitoring")
 )

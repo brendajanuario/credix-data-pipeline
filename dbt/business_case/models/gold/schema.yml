@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: company_payment_summary
+    description: "Gold layer company-level payment analytics and risk scoring"
+    columns:
+      - name: buyer_tax_id
+        description: "Company tax identifier"
+      - name: payment_completion_rate
+        description: "Percentage of installments paid"
+      - name: avg_payment_days
+        description: "Average days from due date for paid installments"
+      - name: payment_tier
+        description: "Risk tier (EXCELLENT, GOOD, FAIR, POOR, HIGH_RISK)"
+      - name: risk_score
+        description: "Numerical risk score (0-100, higher = better)"
+      - name: total_expected_amount
+        description: "Total expected payment amount across all installments"
+
+  - name: payment_analytics_detailed
+    description: "Gold layer transaction-level analytics with company context"
+    columns:
+      - name: asset_id
+        description: "Unique asset identifier"
+      - name: payment_behavior
+        description: "Detailed payment behavior classification"
+      - name: payment_size_category
+        description: "Payment amount category (MICRO, SMALL, MEDIUM, LARGE, XLARGE)"
+      - name: company_risk_category
+        description: "Company risk category based on size and type"
+      - name: geographic_tier
+        description: "Geographic risk classification"
+      - name: overall_data_quality
+        description: "Combined data quality assessment"

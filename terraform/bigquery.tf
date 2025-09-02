@@ -48,3 +48,16 @@ resource "google_bigquery_dataset" "temp" {
     env   = "production"
   }
 }
+
+
+# Elementary bucket
+resource "google_bigquery_dataset" "elementary" {
+  dataset_id  = var.elementary_dataset_id
+  description = "Elementary layer - Basic, raw data"
+  location    = var.region
+
+  labels = {
+    layer = "elementary"
+    env   = "production"
+  }
+}

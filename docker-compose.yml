@@ -42,48 +42,5 @@ services:
     restart: "no"
     profiles:
       - data-loader
-
-  # dbt service for data transformations
-  dbt:
-    build:
-      context: ./docker/dbt
-      dockerfile: Dockerfile
-    container_name: credix_dbt
-    environment:
-      DBT_PROFILES_DIR: /app/profiles
-      DBT_PROJECT_DIR: /app/credix_analytics
-    volumes:
-      - ./dbt/credix_analytics:/app/credix_analytics
-      - ./dbt/profiles.yml:/app/profiles/profiles.yml:ro
-      - ./secrets:/app/secrets:ro
-    networks:
-      - credix_network
-    restart: "no"
-    profiles:
-      - dbt
-
-  # Dagster orchestration service
-  dagster:
-    build:
-      context: ./docker/dagster
-      dockerfile: Dockerfile
-    container_name: credix_dagster
-    environment:
-      DAGSTER_HOME: /app/dagster_home
-      PYTHONPATH: /app
-    volumes:
-      - ./dagster/credix_pipeline:/app/credix_pipeline
-      - ./secrets:/app/secrets:ro
-    ports:
-      - "3000:3000"
-    networks:
-      - credix_network
-    depends_on:
-      postgres:
-        condition: service_healthy
-    restart: "no"
-    profiles:
-      - dagster
-
 volumes:
   postgres_data:

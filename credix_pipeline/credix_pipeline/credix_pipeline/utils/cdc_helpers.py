@@ -19,21 +19,6 @@ def get_cdc_last_processed_time(context: AssetExecutionContext, checkpoint_asset
     context.log.info("No previous timestamp found, using default")
     return default_time
 
-def build_cdc_query(table_name: str, columns: list, last_processed_time: str, limit: int = 10000) -> str:
-    """Build CDC query for extracting changed records."""
-    columns_str = ",\n        ".join(columns)
-    
-    query = f"""
-    SELECT 
-        {columns_str}
-    FROM {table_name}
-    WHERE updated_at > '{last_processed_time}'
-       OR created_at > '{last_processed_time}'
-    ORDER BY updated_at DESC
-    LIMIT {limit}  -- Safety limit for CDC processing
-    """
-    
-    return query
 
 def process_cdc_results(context: AssetExecutionContext, df: pd.DataFrame, last_processed_time: str) -> dict:
     """Process CDC query results and return metadata."""

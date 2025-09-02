@@ -8,7 +8,7 @@ sources:
     schema: business_case_temp
     tables:
       - name: cnpj_ws
-        identifier: "{{ var('temp_table_name', 'cnpj_ws') }}"
+        identifier: "{{ var('temp_table_name', 'cnpj_ws_dbt') }}"
         description: "Temporary CNPJ data from PostgreSQL"
         meta:
           dagster:
@@ -45,10 +45,16 @@ sources:
             description: "Record creation timestamp"
           - name: updated_at
             description: "Record update timestamp"
+          - name: buyer_tax_id
+            description: "Buyer tax ID"
 
       - name: installments
-        identifier: "{{ var('installments_temp_table_name', 'installments') }}"
+        identifier: "{{ var('temp_table_name', 'installments_dbt') }}"
         description: "Temporary installments data from PostgreSQL"
+        meta:
+          dagster:
+            asset_key: ["installments_temp_table"]
+            group: installments_pipeline
         columns:
           - name: asset_id
             description: "Asset identifier"
@@ -70,7 +76,3 @@ sources:
             description: "Invoice issue date"
           - name: buyer_main_tax_id
             description: "Buyer main tax ID"
-          - name: created_at
-            description: "Record creation timestamp"
-          - name: updated_at
-            description: "Record update timestamp"

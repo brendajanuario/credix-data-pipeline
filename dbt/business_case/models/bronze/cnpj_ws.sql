@@ -45,11 +45,3 @@ SELECT
     'business_case_temp.cnpj_ws' as _source_table
 FROM
     {{ source('business_case_temp', 'cnpj_ws') }}
-
-{% if is_incremental() %}
-
-  -- this filter will only apply to an incremental run
-  -- to reduce the amount of incoming data processed
-  WHERE updated_at > (SELECT MAX(updated_at) FROM {{ this }})
-
-{% endif %}

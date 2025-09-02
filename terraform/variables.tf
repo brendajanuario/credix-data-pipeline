@@ -50,3 +50,10 @@ variable "temp_dataset_id" {
   type        = string
   default     = "business_case_temp"
 }
+
+variable "elementary_dataset_id" {
+  description = "BigQuery dataset for Elementary layer"
+  type        = string
+  default     = "business_case_elementary"
+  
+}

@@ -38,3 +38,27 @@ resource "google_storage_bucket" "archive_bucket" {
     enabled = true
   }
 }
+
+resource "google_storage_bucket" "elementary_bucket" {
+  name     = "credix-elementary-report"
+  location = var.region
+
+  uniform_bucket_level_access = true
+
+  versioning {
+    enabled = true
+  }
+
+  # 1. Configura o bucket como um site estático.
+  website {
+    main_page_suffix = "index.html"
+  }
+}
+
+# 2. Torna o bucket acessível publicamente para visualização.
+# O objeto `elementary_report.html` será lido por `allUsers`.
+resource "google_storage_bucket_iam_member" "public_report_access" {
+  bucket = google_storage_bucket.elementary_bucket.name
+  role   = "roles/storage.objectViewer"
+  member = "allUsers"
+}

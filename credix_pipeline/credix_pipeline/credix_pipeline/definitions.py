@@ -1,9 +1,9 @@
 import os
-from dagster import Definitions, load_assets_from_modules
+from dagster import Definitions, load_assets_from_modules, RunRequest, schedule
 from dagster_dbt import DbtCliResource
 
 from credix_pipeline import assets  # noqa: TID252
-from credix_pipeline.jobs import cnpj_pipeline_job, installments_pipeline_job, full_data_pipeline_job
+from credix_pipeline.jobs import cnpj_pipeline_job, installments_pipeline_job, full_data_pipeline_job, monitoring_job
 from credix_pipeline.resources import PostgresResource, GCPResource
 
 # Load all assets from the assets modules
@@ -31,9 +31,21 @@ resources = {
     ),
 }
 
+@schedule(job=installments_pipeline_job, cron_schedule="*/5 * * * *")
+def installments_5_minute_schedule():
+    return RunRequest()
+
+@schedule(job=cnpj_pipeline_job, cron_schedule="0 0 * * *")
+def cnpj_daily_schedule():
+    return RunRequest()
+
+@schedule(job=monitoring_job, cron_schedule="@daily")
+def edr_daily_schedule():
+    return RunRequest()
 
 defs = Definitions(
     assets=all_assets,
-    jobs=[cnpj_pipeline_job, installments_pipeline_job, full_data_pipeline_job],
+    jobs=[cnpj_pipeline_job, installments_pipeline_job, monitoring_job, full_data_pipeline_job],
+    schedules=[installments_5_minute_schedule, cnpj_daily_schedule, edr_daily_schedule],
     resources=resources,
 )

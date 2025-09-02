@@ -1,5 +1,7 @@
 from .cnpj_assets import *
 from .installments_assets import *
+from .elementary_assets import *
+from .gold_assets import *
 #from .dbt_assets import dbt_silver_cnpj_clean, dbt_gold_cnpj_metrics
 
 __all__ = [
@@ -16,4 +18,8 @@ __all__ = [
     "dbt_bronze_installments",
     "dbt_silver_installments_clean",
     "installments_cdc_checkpoint",
+    "edr_monitor_asset",
+    "edr_send_report_asset",
+    "dbt_gold_company_payment_summary",
+    "dbt_gold_payment_analytics_detailed"
 ]

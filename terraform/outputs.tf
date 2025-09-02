@@ -28,6 +28,12 @@ output "temp_dataset_id" {
   value       = google_bigquery_dataset.temp.dataset_id
 }
 
+
+output "elementary_dataset_id" {
+  description = "BigQuery Elementary dataset ID"
+  value       = google_bigquery_dataset.elementary.dataset_id
+}
+
 output "service_account_email" {
   description = "Email of the Credix pipeline service account"
   value       = google_service_account.credix_pipeline.email
@@ -35,6 +41,6 @@ output "service_account_email" {
 
 output "service_account_key_path" {
   description = "Path to the service account key file"
-  value       = "../secrets/credix-pipeline-key.json"
+  value       = "/Users/jemzin/Github/credix-pipeline-key.json"
   sensitive   = true
 }

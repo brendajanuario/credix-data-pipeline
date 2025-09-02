@@ -55,7 +55,26 @@ class GCPResource(ConfigurableResource):
         
         job_config = bigquery.LoadJobConfig(
             source_format=bigquery.SourceFormat.PARQUET,
-            write_disposition=bigquery.WriteDisposition.WRITE_APPEND,
+            write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE_DATA,
+            schema=schema
+        )
+        
+        load_job = client.load_table_from_uri(
+            gcs_uri, table_ref, job_config=job_config
+        )
+        
+        load_job.result()  # Wait for job to complete
+        return f"{dataset_id}.{table_id}"
+    
+    def load_to_bigquery_truncate(self, dataset_id: str, table_id: str, gcs_uri: str, schema: list):
+        """Load data from GCS to BigQuery with WRITE_TRUNCATE mode."""
+        client = self.get_bigquery_client()
+        
+        table_ref = client.dataset(dataset_id).table(table_id)
+        
+        job_config = bigquery.LoadJobConfig(
+            source_format=bigquery.SourceFormat.PARQUET,
+            write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE,
             schema=schema
         )
         
@@ -98,6 +117,7 @@ class GCPResource(ConfigurableResource):
         
         return dest_uri
     
+
     def get_table_schema(self, dataset_id: str, table_id: str):
         """Get the schema of an existing BigQuery table."""
         client = self.get_bigquery_client()
@@ -109,3 +129,15 @@ class GCPResource(ConfigurableResource):
         except Exception as e:
             # If table doesn't exist, return None
             return None
+        
+    def delete_temp_table(self, dataset_id: str, table_id: str):
+        """Delete a temporary table."""
+        client = self.get_bigquery_client()
+        table_ref = client.dataset(dataset_id).table(table_id)
+        
+        try:
+            client.delete_table(table_ref)
+            return f"Deleted table: {dataset_id}.{table_id}"
+        except Exception as e:
+            # Log but don't fail the pipeline for cleanup issues
+            return f"Failed to delete table {dataset_id}.{table_id}: {e}"

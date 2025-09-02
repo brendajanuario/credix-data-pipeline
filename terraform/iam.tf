@@ -39,5 +39,5 @@ resource "google_service_account_key" "credix_pipeline_key" {
 # Store the key locally for dbt and other tools
 resource "local_file" "service_account_key" {
   content  = base64decode(google_service_account_key.credix_pipeline_key.private_key)
-  filename = "../secrets/credix-pipeline-key.json"
+  filename = "/Users/jemzin/Github/credix-pipeline-key.json"
 }

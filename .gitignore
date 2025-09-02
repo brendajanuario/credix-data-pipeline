@@ -15,12 +15,13 @@ __pycache__/
 # dbt
 dbt/logs/
 dbt/*/target/
-dbt/dbt_packages/
+dbt/business_case/dbt_packages/
 
 # Dagster
 orchestration/.dagster/
 orchestration/dagster_home/
 credix_pipeline/credix_pipeline/tmp*
+*tmp*
 
 # IDE
 .vscode/
