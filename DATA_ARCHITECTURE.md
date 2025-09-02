@@ -2,7 +2,7 @@
 1. [Complete Data Platform Architecture](https://github.com/brendajanuario/credix-data-pipeline/blob/main/DATA_ARCHITECTURE.md#data-architecture-a-lambda-approach)
 2. [Case-Specific Solution (only PostgreSQL transactional replication)](https://github.com/brendajanuario/credix-data-pipeline/blob/main/DATA_ARCHITECTURE.md#case-specific-solution-only-postgresql-transactional-replication)
 
-### **Data Architecture: A Lambda Approach**
+## **Data Architecture: A Lambda Approach**
 
 This project adopts a Lambda architecture to handle both **batch** and **streaming** data. This design meets two core needs in enterprise data environments: historical storage for analytics and real-time processing for event-driven use cases, such as on-demand credit score calculation.
 
@@ -73,8 +73,9 @@ For a light workload like 15 daily jobs, the cost is relatively fixed.
 
 <img width="1496" height="658" alt="image" src="https://github.com/user-attachments/assets/668d8211-00e5-42b5-8e11-dda86042e468" />
 
+---
 
-### Case-Specific Solution (only PostgreSQL transactional replication)
+## Case-Specific Solution (only PostgreSQL transactional replication)
 
 For the PostgreSQL use case, the recommended design follows a simplified Medallion architecture on GCP:
 
