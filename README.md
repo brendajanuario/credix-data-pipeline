@@ -1,1 +1,0 @@
-# credix-data-pipeline
