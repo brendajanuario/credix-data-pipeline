@@ -1,0 +1,33 @@
+# Top-level dependencies for the Credix data pipeline
+# Edit this list to reflect only what your project directly depends on.
+# Then run: pip-compile requirements.in -o requirements.txt
+
+# Orchestration
+dagster
+dagster-dbt
+dagster-gcp
+dagster-postgres
+dagster-webserver
+
+# dbt + quality
+dbt-core
+dbt-bigquery
+elementary-data
+
+# Data processing / IO
+pandas
+pyarrow
+sqlalchemy
+psycopg2-binary
+
+# Google Cloud
+google-cloud-bigquery
+google-cloud-storage
+pandas-gbq
+
+# Optional extras (uncomment if you use them)
+# azure-storage-blob
+# boto3
+
+# If you need your local package, include it as editable (uncomment and adjust)
+# -e git+https://github.com/brendajanuario/credix-data-pipeline.git@926003b414db34f57f33589ae299b2206aee9176#egg=credix_pipeline&subdirectory=credix_pipeline/credix_pipeline

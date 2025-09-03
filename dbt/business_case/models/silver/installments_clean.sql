@@ -39,6 +39,15 @@ SELECT
   _loaded_at
   
 FROM {{ ref('installments') }}
+WHERE
+  asset_id IS NOT NULL
+  AND buyer_tax_id IS NOT NULL
+  AND expected_amount_in_cents IS NOT NULL
+  AND due_date IS NOT NULL
+  -- sanity checks for negative values
+  AND (original_amount_in_cents IS NULL OR original_amount_in_cents >= 0)
+  AND expected_amount_in_cents >= 0
+  AND (paid_amount_in_cents IS NULL OR paid_amount_in_cents >= 0)
 
 -- {% if is_incremental() %}
 --   WHERE _loaded_at > (SELECT MAX(_loaded_at) FROM {{ this }})

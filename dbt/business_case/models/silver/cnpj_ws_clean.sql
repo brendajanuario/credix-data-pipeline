@@ -33,4 +33,8 @@ WITH cleaned_data AS (
 SELECT 
     *
 FROM cleaned_data
+WHERE 
+    data_quality_flag = 'VALID'
+    AND buyer_tax_id IS NOT NULL
+    --AND company_status IN ('Ativa', 'Baixada', 'Suspensa', 'Inapta')
 

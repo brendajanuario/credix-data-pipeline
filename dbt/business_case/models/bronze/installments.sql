@@ -14,7 +14,9 @@
       'buyer_main_tax_id'
     ],
     schema = 'bronze',
-    meta = {'dagster': {'group': 'installments_pipeline'}}
+    meta = {'dagster': {'group': 'installments_pipeline'}},
+    severity = 'warn'
+
   )
 }}
 

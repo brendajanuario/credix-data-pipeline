@@ -1,0 +1,108 @@
+version: 2
+
+models:
+  - name: cnpj_ws_clean
+    description: "Silver layer - cleaned/standardized CNPJ data"
+    columns:
+      - name: buyer_tax_id
+        description: "Company tax identifier (CNPJ root). Primary business key for joins."
+        tests:
+          - not_null
+          - unique
+      - name: share_capital
+        description: "Declared company share capital (numeric currency units)."
+      - name: company_size
+        description: "Company size classification (e.g., MICRO, SMALL, MEDIUM, LARGE)."
+      - name: legal_nature
+        description: "Company legal nature/type classification."
+      - name: simples_option
+        description: "Whether the company opted into the 'Simples Nacional' tax regime."
+      - name: is_mei
+        description: "Whether the company is registered as MEI."
+      - name: is_main_company
+        description: "Whether this registration is the company's head office (matriz)."
+      - name: company_status
+        description: "Official company status. Validated to one of: Ativa, Baixada, Suspensa, Inapta."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Ativa', 'Baixada', 'Suspensa', 'Inapta']
+      - name: is_active
+        description: "Boolean convenience flag indicating active status."
+      - name: zipcode
+        description: "8-digit postal code; invalid formats removed in silver."
+        meta:
+          pii: true
+        tests:
+          - not_null
+      - name: main_cnae
+        description: "Primary CNAE (economic activity) code; required in silver."
+        tests:
+          - not_null
+      - name: state
+        description: "Raw state name as received from bronze."
+      - name: uf
+        description: "Raw federative unit (UF) as received from bronze."
+      - name: city
+        description: "Raw city name as received from bronze."
+      - name: standardized_state
+        description: "Uppercased and trimmed state string for consistent joins/grouping."
+      - name: standardized_uf
+        description: "Uppercased and trimmed UF code for consistent joins/grouping."
+      - name: standardized_city
+        description: "Uppercased and trimmed city string for consistent joins/grouping."
+      - name: data_quality_flag
+        description: "Row-level DQ classification derived in silver (VALID, INVALID_CAPITAL, INVALID_ZIPCODE, MISSING_CNAE). Only VALID rows are kept."
+      - name: created_at
+        description: "Creation timestamp from the source system."
+      - name: updated_at
+        description: "Last update timestamp from the source system."
+      - name: _loaded_at
+        description: "Load timestamp into bronze; propagated for lineage and incremental logic."
+      - name: _source_table
+        description: "Original source table identifier for lineage/debugging."
+
+  - name: installments_clean
+    description: "Silver layer - cleaned installments data"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - invoice_id
+            - buyer_main_tax_id
+            - due_date
+    columns:
+      - name: asset_id
+        description: "Unique asset/receivable identifier (natural key)."
+        tests:
+          - not_null
+          - unique
+      - name: invoice_id
+        description: "Invoice identifier that this installment is linked to."
+      - name: buyer_tax_id
+        description: "Buyer/company tax id from the installment record."
+        tests:
+          - not_null
+      - name: buyer_main_tax_id
+        description: "Alternate or normalized buyer tax id; used to coalesce primary identity."
+      - name: original_amount
+        description: "Original amount converted from cents to currency units."
+      - name: expected_amount
+        description: "Expected amount (currency units) after adjustments; baseline for comparisons and recovery rate."
+        tests:
+          - not_null
+      - name: paid_amount
+        description: "Paid amount (currency units)."
+      - name: due_date
+        description: "Due date for the installment; used to derive payment status and timing."
+        tests:
+          - not_null
+      - name: paid_date
+        description: "Date the installment was actually paid (if applicable)."
+      - name: invoice_issue_date
+        description: "Issue date of the originating invoice."
+      - name: payment_status
+        description: "Derived status: PAID when paid_date present; OVERDUE if past due; else PENDING."
+      - name: days_from_due_date
+        description: "Difference in days from due date to payment date or current date when unpaid."
+      - name: _loaded_at
+        description: "Load timestamp into bronze; used for incremental logic in downstream models."

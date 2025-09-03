@@ -43,7 +43,7 @@ def cnpj_raw_data(context: AssetExecutionContext, postgres: PostgresResource) ->
     WHERE updated_at > '{last_processed_time}'
     OR created_at > '{last_processed_time}'
     ORDER BY updated_at DESC
-    LIMIT 1000  -- Safety limit for CDC processing
+    -- LIMIT 1000  -- Safety limit for CDC processing
     """
     
     context.log.info(f"Extracting CNPJ data with CDC (created_at/updated_at) since: {last_processed_time}")

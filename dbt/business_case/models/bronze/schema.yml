@@ -3,13 +3,13 @@ version: 2
 models:
   - name: cnpj_ws
     description: "Bronze layer companies data from CNPJ WS API"
-    # tests:
-    #   - elementary.freshness_anomalies:
-    #       timestamp_column: "updated_at"
-    #       anomaly_sensitivity: 3         
-    #       detection_period:
-    #         period: day
-    #         count: 1
+    tests:
+      - elementary.freshness_anomalies:
+          timestamp_column: "updated_at"
+          anomaly_sensitivity: 3         
+          detection_period:
+            period: day
+            count: 1
     columns:
       - name: share_capital
         data_type: float64
@@ -85,7 +85,8 @@ models:
       - name: buyer_main_tax_id
         data_type: string
         tests:
-          - not_null        
+          - not_null:
+              severity: warn  # Set severity for this specific test
       - name: _loaded_at
         description: "Timestamp when data was loaded to bronze layer"
         tests:

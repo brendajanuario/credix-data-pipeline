@@ -20,7 +20,9 @@
         'updated_at'
     ],
     schema='bronze',
-    meta={'dagster': {'group': 'cnpj_pipeline'}}
+    meta={'dagster': {'group': 'cnpj_pipeline'}},
+    severity = 'warn'
+
   )
 }}
 

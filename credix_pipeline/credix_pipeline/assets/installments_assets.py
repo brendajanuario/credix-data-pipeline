@@ -53,7 +53,8 @@ def installments_raw_data(context: AssetExecutionContext, postgres: PostgresReso
             COALESCE(invoice_issue_date, '1900-01-01'::timestamp),
             COALESCE(paid_date, '1900-01-01'::timestamp)
         ) DESC
-    LIMIT 1000;"""
+    -- LIMIT 1000;
+    """
     
     context.log.info(f"Extracting installments data with CDC logic since: {last_processed_time}")
     df = postgres.execute_query(query)
