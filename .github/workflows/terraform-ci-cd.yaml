@@ -16,6 +16,7 @@ jobs:
     env:
       GOOGLE_CLOUD_KEYFILE_JSON: ${{ secrets.GCP_CREDENTIALS }}
       TF_VAR_project_id: "product-reliability-analyzer"
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     defaults:
       run:
