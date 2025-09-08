@@ -18,3 +18,16 @@ provider "google" {
   region      = var.region
 // credentials = "${path.module}/dev-sa-credentials.json"
 }
+
+# Enable required APIs for Datastream
+resource "google_project_service" "datastream_api" {
+  service = "datastream.googleapis.com"
+}
+
+resource "google_project_service" "dataflow_api" {
+  service = "dataflow.googleapis.com"
+}
+
+resource "google_project_service" "compute_api" {
+  service = "compute.googleapis.com"
+}

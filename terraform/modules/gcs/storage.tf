@@ -4,6 +4,7 @@ resource "google_storage_bucket" "raw_bucket" {
   location = var.region
   
   uniform_bucket_level_access = true
+  force_destroy = true  # Allow deletion with objects
   
   lifecycle_rule {
     condition {
@@ -24,6 +25,7 @@ resource "google_storage_bucket" "archive_bucket" {
   location = var.region
   
   uniform_bucket_level_access = true
+  force_destroy = true  # Allow deletion with objects
   
   lifecycle_rule {
     condition {
@@ -44,6 +46,7 @@ resource "google_storage_bucket" "elementary_bucket" {
   location = var.region
 
   uniform_bucket_level_access = true
+  force_destroy = true  # Allow deletion with objects
 
   versioning {
     enabled = true

@@ -55,5 +55,24 @@ variable "elementary_dataset_id" {
   description = "BigQuery dataset for Elementary layer"
   type        = string
   default     = "business_case_elementary"
-  
+}
+
+# Datastream Variables
+variable "postgres_username" {
+  description = "PostgreSQL username for Datastream"
+  type        = string
+  default     = "datastream_user"
+}
+
+variable "postgres_password" {
+  description = "PostgreSQL password for Datastream user"
+  type        = string
+  sensitive   = true
+  default     = "datastream123"
+}
+
+variable "postgres_database" {
+  description = "PostgreSQL database name"
+  type        = string
+  default     = "credix_transactions"
 }

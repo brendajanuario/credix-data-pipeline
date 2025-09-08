@@ -5,6 +5,8 @@ resource "google_bigquery_dataset" "bronze" {
   dataset_id  = var.bronze_dataset_id
   description = "Bronze layer - Raw data from source systems"
   location    = var.region
+  
+  delete_contents_on_destroy = true
 
   labels = {
     layer = "bronze"
@@ -17,6 +19,8 @@ resource "google_bigquery_dataset" "silver" {
   dataset_id  = var.silver_dataset_id
   description = "Silver layer - Cleansed and standardized data"
   location    = var.region
+  
+  delete_contents_on_destroy = true
 
   labels = {
     layer = "silver"
@@ -29,6 +33,8 @@ resource "google_bigquery_dataset" "gold" {
   dataset_id  = var.gold_dataset_id
   description = "Gold layer - Business-ready aggregated data"
   location    = var.region
+  
+  delete_contents_on_destroy = true
 
   labels = {
     layer = "gold"
@@ -42,6 +48,8 @@ resource "google_bigquery_dataset" "temp" {
   dataset_id  = var.temp_dataset_id
   description = "Temp layer - Temporary data to be merged into the bronze layer"
   location    = var.region
+  
+  delete_contents_on_destroy = true
 
   labels = {
     layer = "temp"
@@ -55,6 +63,8 @@ resource "google_bigquery_dataset" "elementary" {
   dataset_id  = var.elementary_dataset_id
   description = "Elementary layer - Basic, raw data"
   location    = var.region
+  
+  delete_contents_on_destroy = true
 
   labels = {
     layer = "elementary"
