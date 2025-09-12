@@ -8,7 +8,7 @@ business_case:
       dataset: business_case
       threads: 4
       timeout_seconds: 300
-      location: us
+      location: us-central1
       keyfile: /Users/jemzin/Github/credix-pipeline-key.json
       
     prod:
@@ -18,32 +18,10 @@ business_case:
       dataset: business_case
       threads: 4
       timeout_seconds: 300
-      location: us
+      location: us-central1
       keyfile: /Users/jemzin/Github/credix-pipeline-key.json
 
 
-business_case:
-  target: dev
-  outputs:
-    dev:
-      type: bigquery
-      method: service-account
-      project: product-reliability-analyzer
-      dataset: business_case
-      threads: 4
-      timeout_seconds: 300
-      location: us
-      keyfile: /Users/jemzin/Github/credix-pipeline-key.json
-      
-    prod:
-      type: bigquery
-      method: service-account
-      project: product-reliability-analyzer
-      dataset: business_case
-      threads: 4
-      timeout_seconds: 300
-      location: us
-      keyfile: /Users/jemzin/Github/credix-pipeline-key.json
 
 # elementary:
 #   outputs:

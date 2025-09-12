@@ -19,26 +19,26 @@ SELECT
   round(paid_amount_in_cents / 100.0, 2) as paid_amount,
   
   -- Date fields
-  due_date,
-  paid_date,
-  invoice_issue_date,
-  
+  CAST(due_date AS DATE) as due_date,
+  CAST(paid_date AS DATE) as paid_date,
+  CAST(invoice_issue_date AS DATE) as invoice_issue_date,
+
   -- Calculate payment status
   CASE
     WHEN paid_date IS NOT NULL THEN 'PAID'
-    WHEN due_date < CURRENT_DATE() THEN 'OVERDUE'
+    WHEN CAST(due_date AS DATE) < CURRENT_DATE() THEN 'OVERDUE'
     ELSE 'PENDING'
   END as payment_status,
   
   -- Calculate days from due date
   CASE
-    WHEN paid_date IS NOT NULL THEN DATE_DIFF(paid_date, due_date, DAY)
-    ELSE DATE_DIFF(CURRENT_DATE(), due_date, DAY)
+    WHEN paid_date IS NOT NULL THEN DATE_DIFF(CAST(paid_date AS DATE), CAST(due_date AS DATE), DAY)
+    ELSE DATE_DIFF(CURRENT_DATE(), CAST(due_date AS DATE), DAY)
   END as days_from_due_date,
-  
-  _loaded_at
-  
-FROM {{ ref('installments') }}
+  CURRENT_TIMESTAMP() as _loaded_at
+
+
+FROM product-reliability-analyzer.business_case_bronze.oltp_business_case_installments
 WHERE
   asset_id IS NOT NULL
   AND buyer_tax_id IS NOT NULL

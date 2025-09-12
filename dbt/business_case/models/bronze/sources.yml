@@ -1,0 +1,42 @@
+version: 2
+
+sources:
+  - name: bronze
+    description: "Temporary staging tables from Dagster pipeline"
+    database: product-reliability-analyzer
+    schema: business_case_bronze
+    tables:
+      - name: oltp_business_case_cnpj_ws
+        description: "Temporary CNPJ data from PostgreSQL"
+        meta:
+          dagster:
+            group: cnpj_pipeline
+
+      - name: oltp_business_case_installments
+        description: "Temporary installments data from PostgreSQL"
+        meta:
+          dagster:
+            group: installments_pipeline
+        columns:
+          - name: asset_id
+            description: "Asset identifier"
+          - name: invoice_id
+            description: "Invoice identifier"
+          - name: buyer_tax_id
+            description: "Buyer tax ID"
+          - name: original_amount_in_cents
+            description: "Original amount in cents"
+          - name: expected_amount_in_cents
+            description: "Expected amount in cents"
+          - name: paid_amount_in_cents
+            description: "Paid amount in cents"
+          - name: due_date
+            description: "Payment due date"
+          - name: paid_date
+            description: "Date when installment was paid"
+          - name: invoice_issue_date
+            description: "Invoice issue date"
+          - name: buyer_main_tax_id
+            description: "Buyer main tax ID"
+          - name: _loaded_at
+            description: "Timestamp when record was loaded"

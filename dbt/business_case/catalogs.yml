@@ -1,0 +1,9 @@
+catalogs:
+  - name:  datastream-destination-biglake-credix
+    active_write_integration: biglake_metastore
+    write_integrations:
+      - name: biglake_metastore
+        external_volume: 'gs://datastream-destination-biglake-credix'
+        table_format: iceberg
+        file_format: parquet
+        catalog_type: biglake_metastore
