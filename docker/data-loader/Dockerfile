@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy requirements file first for better Docker layer caching
-COPY docker/data-loader/requirements.txt .
+COPY requirements.txt .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir --upgrade pip && \
@@ -17,9 +17,6 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 # Copy the data loading script
 COPY parquet_to_postgres.py .
-
-# Create data directory
-RUN mkdir -p /app/data
 
 # Default command to run the data loader
 CMD ["python", "parquet_to_postgres.py"]

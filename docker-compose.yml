@@ -6,7 +6,7 @@ services:
       POSTGRES_DB: credix_transactions
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres123
-      POSTGRES_HOST_AUTH_METHOD: trust
+     # POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - "5432:5432"
     volumes:
@@ -19,6 +19,11 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    command: >
+      postgres -c wal_level=logical
+               -c max_replication_slots=10
+               -c max_wal_senders=10
+
 
   # Data loader service - runs once to load parquet data
   data_loader:
@@ -33,7 +38,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres123
     volumes:
-      - ./data:/app/data:ro
+       - ./data:/app/data:ro
     networks:
       - credix_network
     depends_on:
@@ -44,3 +49,7 @@ services:
       - data-loader
 volumes:
   postgres_data:
+
+networks:
+  credix_network:
+    driver: bridge
